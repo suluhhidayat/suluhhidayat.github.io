@@ -617,10 +617,10 @@ function walk(el){
 }
 function attrs(){for(const a of ["aria-label","title"])document.querySelectorAll("["+a+"]").forEach(e=>{const k="en"+a.replace("-","");let o=e.dataset[k];if(o===undefined){o=e.getAttribute(a);if(M[o]===undefined)return;e.dataset[k]=o}e.setAttribute(a,cur==="id"?M[o]:o)})}
 window.applyLang=function(l){if(l)cur=l;document.documentElement.lang=cur;walk(document.body);attrs();document.querySelector('meta[name="description"]').content=DESC[cur]};
-let l=null;try{l=new URLSearchParams(location.search).get("lang")||localStorage.getItem("lang")}catch(e){}
+let l=null;try{localStorage.removeItem("lang");l=new URLSearchParams(location.search).get("lang")}catch(e){}
 if(l!=="en"&&l!=="id")l="en";
 applyLang(l);
-document.getElementById("lang").addEventListener("click",()=>{const n=cur==="en"?"id":"en";applyLang(n);try{localStorage.setItem("lang",n)}catch(e){}});
+document.getElementById("lang").addEventListener("click",()=>{const n=cur==="en"?"id":"en";applyLang(n);try{const u=new URL(location.href);if(n==="id")u.searchParams.set("lang","id");else u.searchParams.delete("lang");history.replaceState(null,"",u)}catch(e){}});
 })();
 </script>
 </body>
